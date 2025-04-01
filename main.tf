@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "hello_world" {
-  ami           = "ami-00bb6a80f01f03502"  # Example Amazon Linux AMI
+  ami           = "ami-0e35ddab05955cf57"  # Example Amazon Linux AMI
   instance_type = "t2.micro"
 
   # User data script to create a simple Hello World page
