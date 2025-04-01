@@ -1,41 +1,42 @@
-name: Terraform Apply
+name: Terraform Automation for AWS Hello World Website
 
 on:
   push:
     branches:
-      - main  # Jab bhi aap main branch pe push karenge, yeh trigger hoga.
+      - main  # Ye trigger karega jab aap main branch pe changes push karenge
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code from repository
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # Step 1: Checkout code
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      # Step 2: Set up Terraform
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: '1.4.5'  # Terraform version set karein
+    # Step 2: Set up Terraform
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.0  # Aap apne required version ke according set kar sakte hain
 
-      # Step 3: Set up AWS credentials
-      - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # GitHub Secrets se AWS credentials
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: "us-east-1"  # Aapke AWS region ke according set karein
+    # Step 3: Set up AWS credentials
+    - name: Set up AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # GitHub Secrets se AWS Access Key ID
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # GitHub Secrets se AWS Secret Access Key
+        aws_region: "us-east-1"  # Aap apne region ko change kar sakte hain
 
-      # Step 4: Initialize Terraform
-      - name: Terraform Init
-        run: terraform init
+    # Step 4: Initialize Terraform
+    - name: Terraform Init
+      run: terraform init
 
-      # Step 5: Run Terraform plan
-      - name: Terraform Plan
-        run: terraform plan
+    # Step 5: Plan Terraform Deployment
+    - name: Terraform Plan
+      run: terraform plan
 
-      # Step 6: Apply Terraform configuration
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+    # Step 6: Apply Terraform Plan (Deploy Resources)
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+
