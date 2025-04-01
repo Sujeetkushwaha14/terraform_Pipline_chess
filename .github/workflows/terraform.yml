@@ -1,0 +1,41 @@
+name: Terraform Automation for AWS Hello World Website
+
+on:
+  push:
+    branches:
+      - main  # Jab aap main branch me push karenge, tab yeh action trigger hoga
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Code ko checkout karna
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Step 2: Terraform setup karna
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.0  # Apni required version of Terraform yaha daalein
+
+    # Step 3: AWS credentials ko configure karna
+    - name: Set up AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # AWS Access Key ID jo GitHub Secrets me stored hai
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # AWS Secret Access Key jo GitHub Secrets me stored hai
+        aws-region: "us-east-1"  # AWS region jahaan aap apne resources deploy karenge
+
+    # Step 4: Terraform ko initialize karna
+    - name: Terraform Init
+      run: terraform init
+
+    # Step 5: Terraform deployment ka plan banwana
+    - name: Terraform Plan
+      run: terraform plan
+
+    # Step 6: Terraform plan ko apply karke resources deploy karna
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
