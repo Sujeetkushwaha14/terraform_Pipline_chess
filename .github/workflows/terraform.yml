@@ -3,7 +3,7 @@ name: Terraform Automation for AWS Hello World Website
 on:
   push:
     branches:
-      - main  # Ye trigger karega jab aap main branch pe changes push karenge
+      - main  # This will trigger the action when you push to the main branch
 
 jobs:
   terraform:
@@ -18,15 +18,15 @@ jobs:
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v1
       with:
-        terraform_version: 1.0.0  # Aap apne required version ke according set kar sakte hain
+        terraform_version: 1.0.0  # Set your required version of Terraform
 
     # Step 3: Set up AWS credentials
     - name: Set up AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # GitHub Secrets se AWS Access Key ID
-        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # GitHub Secrets se AWS Secret Access Key
-        aws_region: "us-east-1"  # Aap apne region ko change kar sakte hain
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # GitHub Secrets for AWS Access Key
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # GitHub Secrets for AWS Secret Access Key
+        aws_region: "us-east-1"  # Region where your resources will be deployed
 
     # Step 4: Initialize Terraform
     - name: Terraform Init
@@ -39,4 +39,3 @@ jobs:
     # Step 6: Apply Terraform Plan (Deploy Resources)
     - name: Terraform Apply
       run: terraform apply -auto-approve
-
