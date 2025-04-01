@@ -1,15 +1,15 @@
 provider "aws" {
   region = "ap-south-1"
 }
-resource "aws_key_pair" "key_pair" {
-  key_name   = "my-key-pair"             # Change this to your preferred key name
-  public_key = file("~/.ssh/id_rsa.pub") # Path to your public key for SSH access
-}
+# resource "aws_key_pair" "key_pair" {
+#   key_name   = "my-key-pair"             # Change this to your preferred key name
+#   public_key = file("~/.ssh/id_rsa.pub") # Path to your public key for SSH access
+# }
 
 resource "aws_instance" "example" {
   ami             = "ami-00bb6a80f01f03502" # Use your preferred Ubuntu AMI
   instance_type   = "t2.micro"
-  key_name        = aws_key_pair.key_pair.key_name
+  # key_name        = aws_key_pair.key_pair.key_name
   security_groups = ["default"]
   # Install Docker and Docker Compose, then create and start docker-compose.yml
   user_data = <<-EOF
