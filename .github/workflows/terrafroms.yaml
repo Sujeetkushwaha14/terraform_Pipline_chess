@@ -8,21 +8,24 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout Repository
+    - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Install Azure CLI
+    - name: Set up Azure CLI
+      uses: azure/setup-azurecli@v2
+
+    - name: Login to Azure using Service Principal
       run: |
-        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+        az login --service-principal -u ${{ secrets.AZURE_APP_ID }} -p ${{ secrets.AZURE_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
 
     - name: Get Azure Access Token
       id: azure_token
       run: |
-        az login --service-principal -u ${{ secrets.AZURE_APP_ID }} -p ${{ secrets.AZURE_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
         TOKEN=$(az account get-access-token --resource https://management.azure.com/ --query "accessToken" -o tsv)
         echo "::set-output name=azure_token::$TOKEN"
-    
+
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v1
 
