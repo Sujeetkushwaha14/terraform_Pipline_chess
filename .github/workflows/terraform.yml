@@ -1,4 +1,4 @@
-name: Terraform Automation for AWS Hello World Website
+name: Terraform Automation for Ai-Chess Game
 
 on:
   push:
